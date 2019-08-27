@@ -1,0 +1,35 @@
+<% include ../partials/header %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">Leave-In</p>
+            <div class="list-group">
+                <li class="list-group-item active">Info 1</li>
+                <li class="list-group-item">Info 2</li>
+                <li class="list-group-item">Info 3</li>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h4><%= transaction.reason %></h4>
+                    <h6>from:<%= transaction.requester.username %></h6> 
+                    <h6>to:<%= transaction.responder.username %></h6>
+                    <%= transaction.acceptance %>
+                    
+                </div>
+                <%if(currentUser.type=="admin"){%>
+                <p>
+                    <form action="/transactions/<%=transaction._id %>" method="POST">
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-primary ">Accept!</button>
+                        </div>
+                    </form>
+                </p>
+                <%}%>
+             </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

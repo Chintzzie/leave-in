@@ -1,0 +1,35 @@
+<% include ../partials/header %> 
+
+ <div class="container">
+     <header class="jumbotron">
+         <div class="container">
+             <h1>Welcome To Leave-IN!</h1>
+             <p>
+                <a class="btn btn-warning btn-large" href="/admins/index">View Admins</a>
+             </p>
+         </div>
+     </header>
+     
+     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% allTransactions.forEach(function(transaction){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                   <div class="caption">
+                       <h4><%= transaction.reason %></h4>
+                       <h6>from:<%= transaction.requester.username %></h6> 
+                       <h6>to:<%= transaction.responder.username %></h6>
+                       <%= transaction.acceptance %>
+                   </div>
+                   <%if(currentUser.type=="admin"){%>
+                   <p>
+                       <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
+                   </p>
+                   <%}%>
+                </div>
+            </div>
+        <% }); %>
+        
+    </div>
+</div>
+
+<% include ../partials/footer %>
