@@ -5,7 +5,7 @@
 <p>Welcome to Leave-IN</p>
 <% if(currentUser!=null){%>
     <% if (currentUser.type=="admin") {%>
-        <a href="#">Show requests</a>
+        <a href="/transactions">Show requests</a>
     <% }else {%>
         <a href="/transactions">List pending requests</a>
     <%}%>

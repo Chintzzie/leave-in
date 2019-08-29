@@ -5,26 +5,28 @@
          <div class="container">
              <h1>Welcome To Leave-IN!</h1>
              <p>
-                <a class="btn btn-warning btn-large" href="/orgs">View all Admins</a>
+                 View all the organisations listed on site
              </p>
+             <%if(currentUser.type=="admin"){%>
+                <a href="/orgs/new" class="btn btn-primary">Create new organisation</a><br>
+            <% }%>
          </div>
      </header>
      
      <div class="row text-center" style="display:flex; flex-wrap: wrap;">
-        <% if(allTransactions.length==0){%>
-            <h2>No requests!</h2>
+        <% if(orgs.length==0){%>
+            <h2>No organisations!</h2><br>
         <% } else { %>
-            <% allTransactions.forEach(function(transaction){ %>
+            <% orgs.forEach(function(org){ %>
                 <div class="col-md-3 col-sm-6">
                     <div class="thumbnail">
+                        <img src="<%= org.img %>">
                     <div class="caption">
-                        <h4><%= transaction.reason %></h4>
-                        <h6>from:<%= transaction.requester.username %></h6> 
-                        <h6>to:<%= transaction.responder.username %></h6>
-                        <%= transaction.acceptance %>
+                        <h4><%= org.name %></h4>
+                        <a href="<%= org.url %>">Visit organisation</a>
                     </div>
                     <p>
-                        <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
+                        <a href="/orgs/<%= org._id%>/show" class="btn btn-primary">More Info</a>
                     </p>
                     </div>
                 </div>

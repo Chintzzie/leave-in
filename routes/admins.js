@@ -21,34 +21,24 @@ router.get("/admins/index", function(req, res){
 router.get("/:id/transaction/new",middleware.isLoggedIn,function(req,res){
     //Request page
     var adminid=req.params.id;
-    if(req.user!=null){
-        res.render("transactions/new",{adminid: adminid});
-    } else{
-        res.redirect("/login");
-    }
+    res.render("transactions/new",{adminid: adminid});
 });
 
 //CREATE -add new transaction
 router.post("/transactions",middleware.isLoggedIn,function(req,res){
-    User.find({username: req.body.adminid},function(err,adminresponder){
+    var transaction={reason: req.body.cause,requester: req.user._id,responder: req.body.adminid};
+    // console.log("About to be created===");
+    // console.log(transaction);
+    Transaction.create(transaction,function(err,newtransact){
         if(err){
             console.log(err);
         } else {
-            var transaction={reason: req.body.cause,requester: req.user._id,responder: req.body.adminid};
-            // console.log("About to be created===");
-            // console.log(transaction);
-            Transaction.create(transaction,function(err,newtransact){
-                if(err){
-                    console.log(err);
-                } else {
-                    //redirect back to campgrounds page
-                    // console.log("Newly created====");
-                    // console.log(newtransact);
-                    res.redirect("/transactions");
-                }
-            });
+            //redirect back to campgrounds page
+            // console.log("Newly created====");
+            // console.log(newtransact);
+            res.redirect("/transactions");
         }
-     });
+    });
 });
 
 //INDEX - show all transactions
@@ -59,8 +49,8 @@ router.get("/transactions",middleware.isLoggedIn,function(req, res){
             if(err){
                 console.log("Error!");
             } else {
-                console.log("Extracted");
-                console.log(allTransactions);
+                // console.log("Extracted");
+                // console.log(allTransactions);
                 // res.send("OK!");
                 res.render("transactions/index",{allTransactions: allTransactions});
             }
@@ -70,8 +60,8 @@ router.get("/transactions",middleware.isLoggedIn,function(req, res){
             if(err){
                 console.log("Error!");
             } else {
-                console.log("Extracted");
-                console.log(allTransactions);
+                // console.log("Extracted");
+                // console.log(allTransactions);
                 // res.send("OK!");
                 res.render("transactions/index",{allTransactions: allTransactions});
             }
@@ -90,10 +80,23 @@ router.get("/transactions/:id/show",middleware.isLoggedIn,function(req,res){
     });
 });
 
-//SHOW - show detailed info of a transaction
-router.post("/transactions/:id",middleware.isLoggedIn,function(req,res){
+//UPDATE - update info of a transaction
+router.post("/transactions/:id/accept",middleware.isLoggedIn,function(req,res){
     Transaction.findByIdAndUpdate(req.params.id,{acceptance: true},function(err,transaction){
-        res.redirect("/transactions/"+req.params.id+"/show");
+        res.redirect("/transactions");
+    });
+});
+
+//DELETE - delete a transaction
+router.post("/transactions/:id/delete",middleware.isLoggedIn,function(req,res){
+    Transaction.findByIdAndRemove(req.params.id,function(err,transaction){
+        if(err){
+            console.log(err);
+        }else{
+            // console.log("Deleted=====");
+            // console.log(transaction);
+            res.redirect("/transactions");
+        }
     });
 });
 

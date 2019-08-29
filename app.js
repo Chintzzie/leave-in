@@ -15,7 +15,9 @@ var express     = require("express"),
 var commentRoutes    = require("./routes/comments"),
     campgroundRoutes = require("./routes/campgrounds"),
     indexRoutes      = require("./routes/index"),
-    adminRoutes      = require("./routes/admins")
+    adminRoutes      = require("./routes/admins"),
+    orgRoutes      = require("./routes/orgs"),
+    userRoutes      = require("./routes/users")
     
 mongoose.connect("mongodb://localhost/leave-in");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -48,6 +50,8 @@ app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 app.use("/", adminRoutes);
+app.use("/", orgRoutes);
+app.use("/", userRoutes);
 
 
 app.listen(3000, function(){

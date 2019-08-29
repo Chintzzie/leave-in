@@ -1,20 +1,20 @@
 <% include ../partials/header %>
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center">Create a new request</h1>
+        <h1 style="text-align: center">Create a new department</h1>
         <div style="width: 30%; margin: 25px auto;">
-            <form action="/transactions" method="POST">
+            <form action="/orgs/<%= org_id%>/show" method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="cause" placeholder="Eg: fever">
+                    <input class="form-control" type="text" name="name" placeholder="Department name">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="hidden" name="adminid" value="<%=adminid %>">
+                    <input class="form-control" type="hidden" name="head" value="<%= currentUser._id%>">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Submit!</button>
                 </div>
             </form>
-            <a href="/transactions">Go Back</a>
+            <a href="/orgs/<%= org_id%>/show">Go Back</a>
         </div>
     </div>
 </div>

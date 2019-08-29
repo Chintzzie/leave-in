@@ -4,29 +4,46 @@
         <div class="col-md-3">
             <p class="lead">Leave-In</p>
             <div class="list-group">
-                <li class="list-group-item active">Info 1</li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item">Info 3</li>
+                <li class="list-group-item active">Attendance</li>
+                <li class="list-group-item">Cause Genuinity</li>
+                <li class="list-group-item">History</li>
             </div>
         </div>
         <div class="col-md-9">
-            <div class="thumbnail">
-                <div class="caption">
+            <div  class="thumbnail">
+                <div  class="caption">
                     <h4><%= transaction.reason %></h4>
                     <h6>from:<%= transaction.requester.username %></h6> 
                     <h6>to:<%= transaction.responder.username %></h6>
-                    <%= transaction.acceptance %>
-                    
+                    <h3 id="info"><%= transaction.acceptance %></h3>
+                    <%if (transaction.acceptance==true){%>
+                        <script> 
+                            document.getElementById("info").style.color ="green";
+                         </script>
+                    <% } else{%>
+                        <script> 
+                            document.getElementById("info").style.color ="red";
+                        </script>
+                        <% } %>
                 </div>
-                <%if(currentUser.type=="admin"){%>
+                <%if(currentUser._id.equals(transaction.responder._id) && transaction.acceptance==false){%>
                 <p>
-                    <form action="/transactions/<%=transaction._id %>" method="POST">
+                    <form action="/transactions/<%=transaction._id %>/accept" method="POST">
                         <div class="form-group">
-                            <button class="btn btn-lg btn-primary ">Accept!</button>
+                            <button class="btn btn-lg btn-success ">Accept!</button>
                         </div>
                     </form>
                 </p>
                 <%}%>
+                <%if(currentUser._id.equals(transaction.requester._id)){%>
+                    <p>
+                        <form action="/transactions/<%=transaction._id %>/delete" method="POST">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-danger ">DELETE!</button>
+                            </div>
+                        </form>
+                    </p>
+                    <%}%>
              </div>
         </div>
     </div>

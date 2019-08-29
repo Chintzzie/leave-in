@@ -1,0 +1,9 @@
+<% include ../partials/header %> 
+<ul>
+    <li>Name: <%= user.username%></li>
+    <li>Type: <%= user.type%></li>
+    <li>Organisation: <% if(user.org!=undefined){ %><%= user.org.name%> <%}%></li>
+    <li>Department: <% if(user.dept!=null){ %><%= user.dept%> <%}%></li>
+</ul>
+<a href="/users/<%=user._id%>/edit">Edit profile</a>
+<% include ../partials/footer %>

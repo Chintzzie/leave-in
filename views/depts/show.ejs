@@ -4,15 +4,33 @@
      <header class="jumbotron">
          <div class="container">
              <h1>Welcome To LEAVE-IN</h1>
-             <p>View all the admin accounts right here!</p>
+             <p>View all the staff of <%= deptname%></p>
              <p>
                 <a class="btn btn-primary btn-large" href="/transactions">Dashboard</a>
              </p>
          </div>
      </header>
+     <% var headid;
+        var headname;
+        org.depts.forEach(function(dept){
+            if(dept.name== deptname){
+                headid=dept.head._id;
+                headname=dept.head.username;
+            }
+        });
+     %>
      
-     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <div class="col-md-3 col-sm-6">
+            <div class="thumbnail">
+               <div class="caption">
+                   <h4>Head: <%= headname %></h4>
+                   <a href="/<%= headid %>/transaction/new">Request</a>
+               </div>
+            </div>
+        </div>
         <% admins.forEach(function(admin){ %>
+            <%if(!admin._id.equals(headid)){%>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
                    <div class="caption">
@@ -21,8 +39,9 @@
                    </div>
                 </div>
             </div>
-        <% }); %>
+        <% }}); %>
     </div>
+     
 </div>
 
 <% include ../partials/footer %>
