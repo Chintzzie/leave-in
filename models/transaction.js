@@ -10,7 +10,13 @@ var transactionSchema = mongoose.Schema({
     responder: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+    redirection: {type: Boolean,default: false},
+    head: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    interacceptance: {type: Boolean,default: false}
 });
 
 module.exports = mongoose.model("Transaction", transactionSchema);

@@ -15,7 +15,11 @@
                     <h4><%= transaction.reason %></h4>
                     <h6>from:<%= transaction.requester.username %></h6> 
                     <h6>to:<%= transaction.responder.username %></h6>
-                    <h3 id="info"><%= transaction.acceptance %></h3>
+                    <h3 id="info"><%if(transaction.acceptance){%>
+                        Accepted!
+                    <%}else{%>
+                        Pending!
+                    <%}%></h3>
                     <%if (transaction.acceptance==true){%>
                         <script> 
                             document.getElementById("info").style.color ="green";
@@ -26,13 +30,31 @@
                         </script>
                         <% } %>
                 </div>
-                <%if(currentUser._id.equals(transaction.responder._id) && transaction.acceptance==false){%>
+                <%if(transaction.redirection==true && transaction.interacceptance==true){%>
+                    <h3>Accepted by <%= transaction.responder.username%> </h3>
+                <%}%>
+                <%if((currentUser._id.equals(transaction.responder._id) ||(transaction.redirection==true && transaction.head.equals(currentUser._id))) && transaction.acceptance==false){%>
                 <p>
+                    
+                    <%if(transaction.redirection==false ){%>
                     <form action="/transactions/<%=transaction._id %>/accept" method="POST">
                         <div class="form-group">
                             <button class="btn btn-lg btn-success ">Accept!</button>
                         </div>
                     </form>
+                    <%}else if(transaction.head.equals(currentUser._id)){%>
+                        <form action="/transactions/<%=transaction._id %>/accept" method="POST">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-success ">Accept!</button>
+                            </div>
+                        </form>
+                    <%}else{%>
+                        <form action="/transactions/<%=transaction._id %>/forward" method="POST">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-success ">Forward!</button>
+                            </div>
+                        </form>  
+                    <%}%>
                 </p>
                 <%}%>
                 <%if(currentUser._id.equals(transaction.requester._id)){%>
@@ -43,7 +65,7 @@
                             </div>
                         </form>
                     </p>
-                    <%}%>
+                <%}%>
              </div>
         </div>
     </div>

@@ -39,6 +39,22 @@ router.post("/users/:id",middleware.isLoggedIn,function(req,res){
     });
 });
 
+//Updating user association with org and dept
+router.post("/users/:id/register",middleware.isLoggedIn,function(req,res){
+    console.log("------------------------------");
+    // var info={org: req.body.org,dept: req.body.dept,user: req.params.id};
+    // console.log(info);
+    User.findByIdAndUpdate(req.params.id,{org: req.body.org,dept: req.body.dept},function(err,updateduser){
+        if(err){
+            console.log(err);
+        }else{
+            // console.log("Updated User-------");
+            // console.log(updateduser);
+            res.redirect("/orgs/"+req.body.org+"/"+req.body.dept);
+        }
+    });
+});
+
 //FLUSH-flush details of org and dept in an user
 router.post("/users/:id/flush",middleware.isLoggedIn,function(req,res){
     User.findByIdAndUpdate(req.params.id,{org: undefined,dept: null},function(err,foundUser){

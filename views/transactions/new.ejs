@@ -7,6 +7,12 @@
                 <div class="form-group">
                     <input class="form-control" type="text" name="cause" placeholder="Eg: fever">
                 </div>
+                <%if(head!=adminid){%>
+                    <input type="checkbox" name="redirect" value="true" checked>Redirect to Head<br>
+                    <div class="form-group">
+                        <input class="form-control" type="hidden" name="head" value="<%=head %>">
+                    </div>
+                    <%}%>
                 <div class="form-group">
                     <input class="form-control" type="hidden" name="adminid" value="<%=adminid %>">
                 </div>

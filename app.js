@@ -6,18 +6,16 @@ var express     = require("express"),
     passport    = require("passport"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
-    Campground  = require("./models/campground"),
-    Comment     = require("./models/comment"),
-    User        = require("./models/user"),
-    seedDB      = require("./seeds")
+    User        = require("./models/user")
     
 //requiring routes
 var commentRoutes    = require("./routes/comments"),
     campgroundRoutes = require("./routes/campgrounds"),
     indexRoutes      = require("./routes/index"),
     adminRoutes      = require("./routes/admins"),
-    orgRoutes      = require("./routes/orgs"),
-    userRoutes      = require("./routes/users")
+    orgRoutes        = require("./routes/orgs"),
+    userRoutes       = require("./routes/users"),
+    transactionRoutes= require("./routes/transactions")
     
 mongoose.connect("mongodb://localhost/leave-in");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -25,7 +23,6 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
-// seedDB(); //seed the database
 
 // PASSPORT CONFIGURATION
 app.use(require("express-session")({
@@ -52,8 +49,9 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 app.use("/", adminRoutes);
 app.use("/", orgRoutes);
 app.use("/", userRoutes);
+app.use("/", transactionRoutes);
 
 
 app.listen(3000, function(){
-   console.log("The YelpCamp Server Has Started!");
+   console.log("The Leave-In Server Has Started!");
 });

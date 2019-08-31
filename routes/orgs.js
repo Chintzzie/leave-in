@@ -2,7 +2,6 @@ var express = require("express");
 var router  = express.Router();
 var User = require("../models/user");
 var Org = require("../models/org");
-var Dept=require("../models/dept");
 var middleware = require("../middleware");
 
 //NEW- Create a new org
@@ -43,7 +42,7 @@ router.get("/orgs/:id/show",middleware.isLoggedIn,function(req,res){
 
 //EDIT-edit depts in an org
 router.get("/orgs/:id/newdept",middleware.isLoggedIn,function(req,res){
-    res.render("orgs/newdept",{org_id: req.params.id});
+    res.render("depts/new",{org_id: req.params.id});
 });
 
 //UPDATE- add new dept to an org
@@ -83,20 +82,6 @@ router.get("/orgs/:id/:deptname",middleware.isLoggedIn,function(req,res){
     
 });
 
-//Updating admin association with org and dept
-router.post("/admins/:id/register",middleware.isLoggedIn,function(req,res){
-    console.log("------------------------------");
-    // var info={org: req.body.org,dept: req.body.dept,user: req.params.id};
-    // console.log(info);
-    User.findByIdAndUpdate(req.params.id,{org: req.body.org,dept: req.body.dept},function(err,updateduser){
-        if(err){
-            console.log(err);
-        }else{
-            // console.log("Updated User-------");
-            // console.log(updateduser);
-            res.redirect("/orgs/"+req.body.org+"/"+req.body.dept);
-        }
-    });
-});
+
 
 module.exports = router;

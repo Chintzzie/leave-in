@@ -5,12 +5,41 @@
          <div class="container">
              <h1>Welcome To Leave-IN!</h1>
              <p>
-                <a class="btn btn-warning btn-large" href="/orgs">View all Admins</a>
-             </p>
+                <a class="btn btn-warning btn-large" href="/orgs">View all Organisations</a>
+                <%if(currentUser.org!=undefined){%>
+                    <a class="btn btn-success btn-large" href="/orgs/<%=currentUser.org%>/<%=currentUser.dept%>">Make Request</a>
+                <%}%>
+            </p>
          </div>
      </header>
      
      <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <%if(currentUser.type=="admin"){%>
+            <% if(chainedTransaction.length==0){%>
+            <% } else { %>
+                <% chainedTransaction.forEach(function(transaction){ %>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="thumbnail">
+                        <div class="caption">
+                            <h4><%= transaction.reason %></h4>
+                            <h6>from:<%= transaction.requester.username %></h6> 
+                            <h6>to:<%= transaction.responder.username %></h6>
+                            <%if(transaction.acceptance){%>
+                                Accepted!
+                            <%}else{%>
+                                Pending!
+                            <%}%>
+                        </div>
+                        <p>
+                            <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
+                        </p>
+                        </div>
+                    </div>
+                <% }); %>
+                <% } %>
+        <%}%>
+
+
         <% if(allTransactions.length==0){%>
             <h2>No requests!</h2>
         <% } else { %>
@@ -21,7 +50,11 @@
                         <h4><%= transaction.reason %></h4>
                         <h6>from:<%= transaction.requester.username %></h6> 
                         <h6>to:<%= transaction.responder.username %></h6>
-                        <%= transaction.acceptance %>
+                        <%if(transaction.acceptance){%>
+                                Accepted!
+                            <%}else{%>
+                                Pending!
+                            <%}%>
                     </div>
                     <p>
                         <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
