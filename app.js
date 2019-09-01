@@ -15,7 +15,8 @@ var commentRoutes    = require("./routes/comments"),
     adminRoutes      = require("./routes/admins"),
     orgRoutes        = require("./routes/orgs"),
     userRoutes       = require("./routes/users"),
-    transactionRoutes= require("./routes/transactions")
+    transactionRoutes= require("./routes/transactions"),
+    classRoutes= require("./routes/class")
     
 mongoose.connect("mongodb://localhost/leave-in");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -50,6 +51,7 @@ app.use("/", adminRoutes);
 app.use("/", orgRoutes);
 app.use("/", userRoutes);
 app.use("/", transactionRoutes);
+app.use("/", classRoutes);
 
 
 app.listen(3000, function(){

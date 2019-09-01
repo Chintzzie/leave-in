@@ -9,7 +9,11 @@ var UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Org"
     },
-    dept: String
+    dept: String,
+    classs:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Class"
+    }
 });
 
 UserSchema.plugin(passportLocalMongoose)

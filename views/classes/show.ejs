@@ -1,0 +1,58 @@
+<% include ../partials/header %> 
+<%  var headid;
+    classs.org.depts.forEach(function(dept){
+        if(dept.name== classs.dept){
+            headid=dept.head;
+        }
+    });
+%>
+
+ <div class="container">
+     <header class="jumbotron">
+         <div class="container">
+             <h1>Welcome To LEAVE-IN</h1>
+             <p>View all the classes of <%= classs.dept %></p>
+             <p>
+                <a class="btn btn-primary btn-large" href="/transactions">Dashboard</a>
+                <%if(currentUser._id.equals(headid)){%>
+                    <a class="btn btn-warning btn-large" href="/<%= classs.org._id%>/<%= classs.dept%>/classes/<%= classs._id%>/edit">Edit</a>
+                <%}%>
+
+                <% if(currentUser.org==undefined && currentUser.type=="user"){%>
+                    <form action="/users/<%= currentUser._id%>/register" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" type="hidden" name="org" value="<%= classs.org._id%>">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="hidden" name="dept" value="<%= classs.dept%>">
+                        </div>
+                        <div class="form-group">
+                                <input class="form-control" type="hidden" name="classs" value="<%= classs._id%>">
+                            </div>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-primary">Register!</button>
+                        </div>
+                    </form>
+                <%}%>
+
+             </p>
+         </div>
+     </header>
+     
+    Class Name:<h2><%= classs.name%></h2>
+    Class Incharge:<h2><%= classs.head.username%></h2>
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% classs.faculty.forEach(function (faculty){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                   <div class="caption">
+                       <h4><%= faculty.username %></h4>
+                   </div>
+                </div>
+            </div>
+        <% });%>
+    </div>                                        
+     
+</div>
+
+<% include ../partials/footer %>

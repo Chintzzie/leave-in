@@ -15,12 +15,12 @@
                     <h4><%= transaction.reason %></h4>
                     <h6>from:<%= transaction.requester.username %></h6> 
                     <h6>to:<%= transaction.responder.username %></h6>
-                    <h3 id="info"><%if(transaction.acceptance){%>
+                    <h3 id="info"><%if(transaction.acceptance || transaction.isNotification){%>
                         Accepted!
                     <%}else{%>
                         Pending!
                     <%}%></h3>
-                    <%if (transaction.acceptance==true){%>
+                    <%if (transaction.acceptance==true || transaction.isNotification){%>
                         <script> 
                             document.getElementById("info").style.color ="green";
                          </script>
@@ -30,6 +30,9 @@
                         </script>
                         <% } %>
                 </div>
+                <%if(transaction.time!=undefined){%>
+                    <h4><%=transaction.time%></h4>
+                 <%}%>
                 <%if(transaction.redirection==true && transaction.interacceptance==true){%>
                     <h3>Accepted by <%= transaction.responder.username%> </h3>
                 <%}%>

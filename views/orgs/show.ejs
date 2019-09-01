@@ -29,7 +29,7 @@
                     <p>
                         <a href="/orgs/<%= org._id%>/<%= dept.name %>" class="btn btn-primary">More Info</a>
                     </p>
-                    <% if(currentUser.org==undefined){%>
+                    <% if(currentUser.type=="admin" && currentUser.org==undefined){%>
                         <form action="/users/<%= currentUser._id%>/register" method="POST">
                             <div class="form-group">
                                 <input class="form-control" type="hidden" name="org" value="<%= org._id%>">
@@ -38,11 +38,7 @@
                                 <input class="form-control" type="hidden" name="dept" value="<%= dept.name%>">
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-lg btn-primary"><% if(currentUser.type="admin"){%>Register!
-                                    <%}else{%>
-                                        Subscribe
-                                    <%}%>
-                                        </button>
+                                <button class="btn btn-lg btn-primary">Register!</button>
                             </div>
                         </form>
                     <%}%>

@@ -1,0 +1,41 @@
+<% include ../partials/header %>
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center">Create a new class for <%=dept%></h1>
+        <div style="width: 30%; margin: 25px auto;">
+                <!-- No of subjects:<input type="number" id="nos" value=6 > -->
+            
+            <form action="/<%= orgid%>/<%= dept%>/classes" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="name" placeholder="Class name">
+                </div>
+
+                For Class Incharge:<select name="head" >
+                        <% admins.forEach(function(admin){ %>
+                            <option value="<%= admin._id%>" ><%= admin.username%></option>
+                        <%});%>
+                </select><br>
+                For sub 1:<select name="faculty[0]" >
+                        <% admins.forEach(function(admin){ %>
+                            <option value="<%= admin._id%>" ><%= admin.username%></option>
+                        <%});%>
+                </select><br>
+                For sub 2:<select name="faculty[1]" >
+                        <% admins.forEach(function(admin){ %>
+                            <option value="<%= admin._id%>" ><%= admin.username%></option>
+                        <%});%>
+                </select>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+                </div>
+            </form>
+            <a href="#">Go Back</a>
+            
+            <% admins.forEach(function(admin){ %>
+                <%= admin.username%>
+            <%});%>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer %>
+

@@ -6,7 +6,7 @@ var middleware = require("../middleware");
 
 //SHOW - showing the current users profile
 router.get("/users/:id",middleware.isLoggedIn,function(req,res){
-    User.findById(req.params.id).populate("org").exec(function(err,foundUser){
+    User.findById(req.params.id).populate("org").populate("classs").exec(function(err,foundUser){
         if(err){
             console.log(err);
         }else{
@@ -39,12 +39,16 @@ router.post("/users/:id",middleware.isLoggedIn,function(req,res){
     });
 });
 
-//Updating user association with org and dept
+//Updating user association with org,dept and class
 router.post("/users/:id/register",middleware.isLoggedIn,function(req,res){
-    console.log("------------------------------");
+    if(req.user.type=="admin"){
+        var info={org: req.body.org,dept: req.body.dept,user: req.params.id};
+    }else{
+        var info={org: req.body.org,dept: req.body.dept,user: req.params.id,classs: req.body.classs};
+    }
     // var info={org: req.body.org,dept: req.body.dept,user: req.params.id};
     // console.log(info);
-    User.findByIdAndUpdate(req.params.id,{org: req.body.org,dept: req.body.dept},function(err,updateduser){
+    User.findByIdAndUpdate(req.params.id,info,function(err,updateduser){
         if(err){
             console.log(err);
         }else{
@@ -57,7 +61,7 @@ router.post("/users/:id/register",middleware.isLoggedIn,function(req,res){
 
 //FLUSH-flush details of org and dept in an user
 router.post("/users/:id/flush",middleware.isLoggedIn,function(req,res){
-    User.findByIdAndUpdate(req.params.id,{org: undefined,dept: null},function(err,foundUser){
+    User.findByIdAndUpdate(req.params.id,{org: undefined,dept: null,classs: undefined},function(err,foundUser){
         if(err){
             console.log(err);
         }else{

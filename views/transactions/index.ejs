@@ -13,7 +13,9 @@
          </div>
      </header>
      
+     <h2>Requests</h2>
      <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <!-- Displaying chained transactions -->
         <%if(currentUser.type=="admin"){%>
             <% if(chainedTransaction.length==0){%>
             <% } else { %>
@@ -24,6 +26,9 @@
                             <h4><%= transaction.reason %></h4>
                             <h6>from:<%= transaction.requester.username %></h6> 
                             <h6>to:<%= transaction.responder.username %></h6>
+                            <%if(transaction.time!=undefined){%>
+                               <h4><%=transaction.time%></h4>
+                            <%}%>
                             <%if(transaction.acceptance){%>
                                 Accepted!
                             <%}else{%>
@@ -39,9 +44,8 @@
                 <% } %>
         <%}%>
 
-
+        
         <% if(allTransactions.length==0){%>
-            <h2>No requests!</h2>
         <% } else { %>
             <% allTransactions.forEach(function(transaction){ %>
                 <div class="col-md-3 col-sm-6">
@@ -50,6 +54,9 @@
                         <h4><%= transaction.reason %></h4>
                         <h6>from:<%= transaction.requester.username %></h6> 
                         <h6>to:<%= transaction.responder.username %></h6>
+                        <%if(transaction.time!=undefined){%>
+                               <h4><%=transaction.time%></h4>
+                            <%}%>
                         <%if(transaction.acceptance){%>
                                 Accepted!
                             <%}else{%>
@@ -63,8 +70,82 @@
                 </div>
             <% }); %>
             <% } %>
-        
-    </div>
+
+     </div>
+     <%if(currentUser.type=="admin"){%>
+        <h2>Notifications</h2>
+        <div class="row text-center" style="display:flex; flex-wrap: wrap;">    
+                <%if(currentUser.type=="admin"){%>
+                <% if(notifications.length==0){%>
+                    <h4>No notifications</h4><br>
+                <% } else { %>
+                    <% notifications.forEach(function(transaction){ %>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="thumbnail">
+                            <div class="caption">
+                                <%if(transaction.reason!=undefined){%>
+                                    <h4><%= transaction.reason %></h4>
+                                <%}else{%>
+                                    <h4>Un named notification</h4>
+                                <%}%>
+                                <h6>from:<%= transaction.requester.username %></h6> 
+                                <h6>to:<%= transaction.responder.username %></h6>
+                                <%if(transaction.isNotification){%>
+                                    <h5>Notif</h5>
+                                    <%}%>       
+                                <%if(transaction.time!=undefined){%>
+                                <h4><%=transaction.time%></h4>
+                                <%}%>
+                            </div>
+                            <p>
+                                <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
+                            </p>
+                            </div>
+                        </div>
+                    <% }); %>
+                    <% } %>
+            <%}%>
+        </div>
+    <%}%>
+
+
+    <%if(currentUser.type=="admin"){%>
+        <h2>Requests by ME</h2>
+        <div class="row text-center" style="display:flex; flex-wrap: wrap;">    
+                <%if(currentUser.type=="admin"){%>
+                <% if(adminreqs.length==0){%>
+                    <h4>No Requests from me!</h4><br>
+                <% } else { %>
+                    <% adminreqs.forEach(function(transaction){ %>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="thumbnail">
+                            <div class="caption">
+                                <%if(transaction.reason!=undefined){%>
+                                    <h4><%= transaction.reason %></h4>
+                                <%}else{%>
+                                    <h4>Un named notification</h4>
+                                <%}%>
+                                <h6>from:<%= transaction.requester.username %></h6> 
+                                <h6>to:<%= transaction.responder.username %></h6>
+                                <%if(transaction.isNotification){%>
+                                    <h5>Notif</h5>
+                                    <%}%>       
+                                <%if(transaction.time!=undefined){%>
+                                <h4><%=transaction.time%></h4>
+                                <%}%>
+                            </div>
+                            <p>
+                                <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
+                            </p>
+                            </div>
+                        </div>
+                    <% }); %>
+                    <% } %>
+            <%}%>
+        </div>
+    <%}%>
+
+
 </div>
 
 <% include ../partials/footer %>

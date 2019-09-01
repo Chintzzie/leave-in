@@ -1,0 +1,30 @@
+<% include ../partials/header %> 
+
+ <div class="container">
+     <header class="jumbotron">
+         <div class="container">
+             <h1>Welcome To LEAVE-IN</h1>
+             <p>View all the classes of <%= dept %></p>
+             <p>
+                <a class="btn btn-primary btn-large" href="/transactions">Dashboard</a>
+             </p>
+         </div>
+     </header>
+     
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% classes.forEach(function (classs){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                   <div class="caption">
+                       <h4><%= classs.name %></h4>
+                       <h4>Incharge:<%= classs.head.username %></h4>
+                       <a href="/<%= classs.org._id%>/<%=classs.dept%>/classes/<%=classs._id%>">Show info</a>
+                   </div>
+                </div>
+            </div>
+        <% });%>
+    </div>                                        
+     
+</div>
+
+<% include ../partials/footer %>
