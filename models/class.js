@@ -16,6 +16,16 @@ var ClassSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref:"User"
         }
+    ],
+    timetable: [
+        {
+            lecturers: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref:"User"
+                }
+            ]
+        }
     ]
 });
 

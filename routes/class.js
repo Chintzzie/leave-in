@@ -8,7 +8,7 @@ var middleware = require("../middleware");
 //NEW-FORM for a new class
 router.get("/:orgid/:dept/classes/new",middleware.isLoggedIn,function(req,res){
     User.find({type: "admin",org: req.params.orgid,dept: req.params.dept},function(err,foundusers){
-        res.render("classes/new",{orgid: req.params.orgid,dept: req.params.dept,admins: foundusers});
+        res.render("classes/new",{orgid: req.params.orgid,dept: req.params.dept,admins: foundusers,nos: req.query.nos});
     });
 });
 
@@ -24,7 +24,8 @@ router.post("/:orgid/:dept/classes",middleware.isLoggedIn,function(req,res){
         }else{
             // console.log(createdClass);
             // res.send("Ok from Createdclass");
-            res.redirect("/"+req.params.orgid+"/"+req.params.dept+"/classes");
+            res.redirect("/"+req.params.orgid+"/"+req.params.dept+"/classes/"+createdClass._id+"/timetable");
+            // res.redirect("/"+req.params.orgid+"/"+req.params.dept+"/classes");
         }
     });
 });
@@ -65,5 +66,48 @@ router.post("/:orgid/:dept/classes/:classid",middleware.isLoggedIn,function(req,
     });
     
 });
+
+//NEW TIMETABLE - NEW form  for timetable of a class
+router.get("/:orgid/:dept/classes/:classid/timetable",middleware.isLoggedIn,function(req,res){
+    var nop=req.query.nop;
+    Class.findById(req.params.classid).populate("timetable").populate("faculty").populate("timetable.lecturers").exec(function(err,foundclass){
+            res.render("classes/timetables/new",{classs: foundclass,nop: nop});
+    });
+});
+
+//CREATE TIMETABLE 
+router.post("/:orgid/:dept/classes/:classid/timetable",middleware.isLoggedIn,function(req,res){
+    // console.log("-----------------");
+    // console.log(req.body.timetable);
+    // req.body.timetable.forEach(function(table){
+    //     console.log(table.lecturers);
+    //     console.log("++++++");
+    // });
+    Class.findByIdAndUpdate(req.params.classid,{timetable: req.body.timetable},function(err,updatedclass){
+        // console.log(updatedclass);
+        // console.log("--------------");
+        // updatedclass.timetable.forEach(function(table){
+        //         console.log(table.lecturers);
+        //         console.log("++++++");
+        //     });
+        res.redirect("/"+req.params.orgid+"/"+req.params.dept+"/classes/"+req.params.classid);
+    });
+
+});
+
+//EDIT/SHOW TIMETABLE
+router.get("/:orgid/:dept/classes/:classid/timetable/edit",middleware.isLoggedIn,function(req,res){
+    var nop=req.query.nop;
+    Class.findById(req.params.classid).populate("timetable").populate("faculty").exec(function(err,foundclass){
+        // console.log("From routes.js");
+        // foundclass.timetable.forEach(function(table){
+        //              console.log(table.lecturers);
+        //              console.log("++++++");
+        //      });  
+        res.render("classes/timetables/edit",{classs: foundclass,nop: nop});
+    });
+});
+
+
 
 module.exports = router;

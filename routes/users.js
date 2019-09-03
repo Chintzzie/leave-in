@@ -28,13 +28,14 @@ router.get("/users/:id/edit",middleware.isLoggedIn,function(req,res){
 
 //UPDATE-update user profile with new details
 router.post("/users/:id",middleware.isLoggedIn,function(req,res){
+    console.log(req.body);
     User.findByIdAndUpdate(req.params.id,req.body,function(err,foundUser){
         if(err){
             console.log(err);
         }else{
             // console.log(req.body);
             // res.send("Updated user!");
-            res.render("users/show",{user: foundUser});
+            res.redirect("/transactions");
         }
     });
 });

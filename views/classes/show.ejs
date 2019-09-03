@@ -15,8 +15,9 @@
              <p>
                 <a class="btn btn-primary btn-large" href="/transactions">Dashboard</a>
                 <%if(currentUser._id.equals(headid)){%>
-                    <a class="btn btn-warning btn-large" href="/<%= classs.org._id%>/<%= classs.dept%>/classes/<%= classs._id%>/edit">Edit</a>
+                    <a class="btn btn-warning btn-large" href="/<%= classs.org._id%>/<%= classs.dept%>/classes/<%= classs._id%>/edit">Edit Class</a>
                 <%}%>
+                <a class="btn btn-success btn-large" href="/<%= classs.org._id%>/<%= classs.dept%>/classes/<%= classs._id%>/timetable/edit">View Timetable</a>
 
                 <% if(currentUser.org==undefined && currentUser.type=="user"){%>
                     <form action="/users/<%= currentUser._id%>/register" method="POST">

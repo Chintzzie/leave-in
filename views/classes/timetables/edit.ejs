@@ -1,0 +1,51 @@
+<% include ../../partials/header %>
+<div class="container">
+    <div class="row">
+        <%if(nop==undefined){
+            nop=7;
+            }%>
+        <h1 style="text-align: center">EDIT/VIEW timetable for <%=classs.name%> of <%=classs.dept%></h1>
+        <div style="width: 100%; margin: 25px auto;">
+
+            <%
+            var days=["Mon","Tue","Wed","Thu","Fri","Sat"];
+            var cnt=0;%>
+            <form action="/<%= classs.org%>/<%= classs.dept%>/classes/<%= classs._id%>/timetable" method="POST">
+
+                <%days.forEach(function(day){ %>
+                    <h2><%=day%></h2>
+                    <hr>
+                    <%for(var i=0; i<classs.timetable[0].lecturers.length ;i++){ %>
+                        For period <%=i%>:<select name="timetable[<%= cnt%>][lecturers][<%=i%>]" >
+                            <% classs.faculty.forEach(function(admin){ %>
+                                <option value="<%= admin._id%>" 
+                                    <% if(admin._id.equals(classs.timetable[cnt].lecturers[i])){%>
+                                        selected
+                                    <%}%>    
+                                >
+                                    <%= admin.username%>
+                                </option>
+                            <%});%>
+                    </select>
+                    <%}%>
+                    <hr>
+                <%   cnt++; });%>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary ">Update time table</button>
+                    </div>
+
+
+            </form>
+            <a href="#">Go Back</a>
+            
+            <% classs.faculty.forEach(function(admin){ %>
+                <%= admin.username%>
+            <%});%>
+        </div>
+    </div>
+</div>
+<script src="/scripts/classes/timetables/new.js" type="text/javascript"></script>
+<% include ../../partials/footer %>
+
+

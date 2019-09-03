@@ -1,9 +1,18 @@
 <% include ../partials/header %>
 <div class="container">
     <div class="row">
+        <%if(nos==undefined){
+            nos=3;
+            }%>
         <h1 style="text-align: center">Create a new class for <%=dept%></h1>
         <div style="width: 30%; margin: 25px auto;">
-                <!-- No of subjects:<input type="number" id="nos" value=6 > -->
+                <form id="nosform" action="/<%= orgid%>/<%= dept%>/classes/new" method="GET">
+                    <div class="form-group">
+                            No of subjects:<input type="number" id="nos" value=<%=nos%> name="nos" onchange="nosubjects()">
+                    </div>
+                </form>
+
+                
             
             <form action="/<%= orgid%>/<%= dept%>/classes" method="POST">
                 <div class="form-group">
@@ -15,18 +24,15 @@
                             <option value="<%= admin._id%>" ><%= admin.username%></option>
                         <%});%>
                 </select><br>
-                For sub 1:<select name="faculty[0]" >
+                <%for(var i=1; i<=nos ;i++){ %>
+                    For sub <%=i%>:<select name="faculty[<%=i%>]" >
                         <% admins.forEach(function(admin){ %>
                             <option value="<%= admin._id%>" ><%= admin.username%></option>
                         <%});%>
                 </select><br>
-                For sub 2:<select name="faculty[1]" >
-                        <% admins.forEach(function(admin){ %>
-                            <option value="<%= admin._id%>" ><%= admin.username%></option>
-                        <%});%>
-                </select>
+                <%}%>
                 <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+                    <button class="btn btn-lg btn-primary btn-block">Create class</button>
                 </div>
             </form>
             <a href="#">Go Back</a>
@@ -37,5 +43,6 @@
         </div>
     </div>
 </div>
+<script src="/scripts/classes/new.js" type="text/javascript"></script>
 <% include ../partials/footer %>
 

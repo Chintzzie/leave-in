@@ -107,13 +107,18 @@ router.post("/transactions/:id/accept",middleware.isLoggedIn,function(req,res){
         if(foundtransaction.headinvolved==true ){
             User.findById(foundtransaction.requester).populate("classs").exec(function(err,foundUser){
                 if(foundUser.type=="user"){
-                    foundUser.classs.faculty.forEach(function(fac){
-                        Transaction.create({requester: foundtransaction.requester,responder: fac,isNotification: true,reason: foundtransaction.reason},function(err,createdtransaction){
-                            // console.log("Notifications created!");
-                            // console.log(createdtransaction);
-                            res.redirect("/transactions");
+                    //Getting Day of transaction creation
+                    var requestdate=new Date(foundtransaction.time);
+                    var requestday=requestdate.getDay()-1;
+                    if(requestday!=-1){
+                        foundUser.classs.timetable[requestday].lecturers.forEach(function(fac){
+                            Transaction.create({requester: foundtransaction.requester,responder: fac,isNotification: true,reason: foundtransaction.reason},function(err,createdtransaction){
+                                // console.log("Notifications created!");
+                                // console.log(createdtransaction);
+                                res.redirect("/transactions");
+                            });
                         });
-                    });
+                    }
                 }else{
                     // console.log("Admin-admin transaction");
                     res.redirect("/transactions");
