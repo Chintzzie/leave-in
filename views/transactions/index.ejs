@@ -54,9 +54,7 @@
                         <h4><%= transaction.reason %></h4>
                         <h6>from:<%= transaction.requester.username %></h6> 
                         <h6>to:<%= transaction.responder.username %></h6>
-                        <%if(transaction.time!=undefined){%>
-                               <h4><%=transaction.time%></h4>
-                            <%}%>
+                        
                         <%if(transaction.acceptance){%>
                                 Accepted!
                             <%}else{%>
@@ -93,9 +91,7 @@
                                 <%if(transaction.isNotification){%>
                                     <h5>Notif</h5>
                                     <%}%>       
-                                <%if(transaction.time!=undefined){%>
-                                <h4><%=transaction.time%></h4>
-                                <%}%>
+                                
                             </div>
                             <p>
                                 <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>
@@ -130,9 +126,6 @@
                                 <%if(transaction.isNotification){%>
                                     <h5>Notif</h5>
                                     <%}%>       
-                                <%if(transaction.time!=undefined){%>
-                                <h4><%=transaction.time%></h4>
-                                <%}%>
                             </div>
                             <p>
                                 <a href="/transactions/<%= transaction._id%>/show" class="btn btn-primary">More Info</a>

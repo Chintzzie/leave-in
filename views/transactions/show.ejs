@@ -15,6 +15,21 @@
                     <h4><%= transaction.reason %></h4>
                     <h6>from:<%= transaction.requester.username %></h6> 
                     <h6>to:<%= transaction.responder.username %></h6>
+                    <%if(transaction.data.isoneday!=undefined){%>
+                        <h6>Date: <%= transaction.data.startdate %></h6>
+                    <%}else if(transaction.data.isseveraldays!=undefined){%>
+                        <h6>Start date: <%= transaction.data.startdate %></h6>
+                        <h6>End date: <%= transaction.data.enddate %></h6>
+                    <%}else if(transaction.data.isperiods!=undefined){%>
+                        <h6>Date: <%= transaction.data.startdate %></h6>
+                        <h6>Start period: <%= transaction.data.startperiod %></h6>
+                        <h6>End period: <%= transaction.data.endperiod %></h6>
+                    <%}%>
+                    <%if(transaction.isNotification){%>
+                        <h3>For period: <%= transaction.forperiod %></h3>
+                        <h3>For date: <%= transaction.fordate %></h3>
+                    <%}%>
+                    
                     <h3 id="info"><%if(transaction.acceptance || transaction.isNotification){%>
                         Accepted!
                     <%}else{%>
@@ -36,7 +51,9 @@
                 <%if(transaction.redirection==true && transaction.interacceptance==true){%>
                     <h3>Accepted by <%= transaction.responder.username%> </h3>
                 <%}%>
-                <%if((currentUser._id.equals(transaction.responder._id) ||(transaction.redirection==true && transaction.head.equals(currentUser._id))) && transaction.acceptance==false){%>
+                <%if(transaction.isNotification==true){%>
+
+                <%}else if((currentUser._id.equals(transaction.responder._id) ||(transaction.redirection==true && transaction.head.equals(currentUser._id))) && transaction.acceptance==false){%>
                 <p>
                     
                     <%if(transaction.redirection==false ){%>

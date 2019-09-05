@@ -52,7 +52,7 @@ router.get("/:orgid/:dept/classes/:classid/edit",middleware.isLoggedIn,function(
     Class.findById(req.params.classid,function(err,foundClass){
         User.find({type: "admin",org: req.params.orgid,dept: req.params.dept},function(err,foundusers){
             //  console.log(foundClass);
-            res.render("classes/edit",{orgid: req.params.orgid,dept: req.params.dept,admins: foundusers,classs: foundClass});
+            res.render("classes/edit",{orgid: req.params.orgid,dept: req.params.dept,admins: foundusers,classs: foundClass,nos: req.query.nos});
         });
     });
     
@@ -104,6 +104,9 @@ router.get("/:orgid/:dept/classes/:classid/timetable/edit",middleware.isLoggedIn
         //              console.log(table.lecturers);
         //              console.log("++++++");
         //      });  
+        if(foundclass.timetable[0]==undefined){
+            res.redirect("/"+req.params.orgid+"/"+req.params.dept+"/classes/"+req.params.classid+"/timetable");
+        }
         res.render("classes/timetables/edit",{classs: foundclass,nop: nop});
     });
 });

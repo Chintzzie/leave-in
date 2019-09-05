@@ -19,8 +19,17 @@ router.get("/:id/transaction/:head/new",middleware.isLoggedIn,function(req,res){
 
 //CREATE -add new transaction
 router.post("/transactions",middleware.isLoggedIn,function(req,res){
-    // console.log("redirect value=====");
-    // console.log(req.body.redirect);
+
+    var choice=req.body.reqtype;
+    if(choice==1){
+        var data={isoneday: true,startdate: req.body.data.startdate};
+    }else if(choice==2){
+        var data={isseveraldays: true,startdate: req.body.data.startdate,enddate: req.body.data.enddate};
+    }
+    else if(choice==3){
+        var data={isperiods: true,startdate: req.body.data.startdate,startperiod: req.body.data.startperiod,endperiod: req.body.data.endperiod};
+    }
+    
     if(req.body.redirect!=null && req.body.redirect=="true"){
         var transaction={reason: req.body.cause,requester: req.user._id,responder: req.body.adminid,redirection: true,head: req.body.head};
     }else if(req.body.redirect!=null && req.body.redirect=="false"){
@@ -29,17 +38,12 @@ router.post("/transactions",middleware.isLoggedIn,function(req,res){
     else{
         var transaction={reason: req.body.cause,requester: req.user._id,responder: req.body.adminid};
     }
-    
-    // console.log("About to be created===");
-    // console.log(transaction);
-    // res.send("OK!");
+    transaction.data=data;   
     Transaction.create(transaction,function(err,newtransact){
         if(err){
             console.log(err);
         } else {
-            //redirect back to campgrounds page
-            // console.log("Newly created====");
-            // console.log(newtransact);
+
             res.redirect("/transactions");
         }
     });
@@ -57,11 +61,7 @@ router.get("/transactions",middleware.isLoggedIn,function(req, res){
                     if(errors){
                         console.log(errors);
                     }else{
-                        // console.log(chainedTransaction);
-                        // res.send("OK!");
                         Transaction.find({responder:req.user._id,isNotification: true}).sort({time: +1}).populate("requester").populate("responder").exec(function(err,notifications){
-                            // console.log("Notifications received!");
-                            // console.log(notifications);
                             Transaction.find({requester:req.user._id}).sort({time: +1}).populate("requester").populate("responder").exec(function(err,adminreqs){
                                 res.render("transactions/index",{allTransactions: allTransactions,chainedTransaction: chainedTransaction,notifications: notifications,adminreqs: adminreqs});
                             });
@@ -70,10 +70,6 @@ router.get("/transactions",middleware.isLoggedIn,function(req, res){
                         
                     }
                 });
-                // console.log("Extracted");
-                // console.log(allTransactions);
-                // res.send("OK!");
-                
             }
             });
     }else{
@@ -81,9 +77,6 @@ router.get("/transactions",middleware.isLoggedIn,function(req, res){
             if(err){
                 console.log("Error!");
             } else {
-                // console.log("Extracted");
-                // console.log(allTransactions);
-                // res.send("OK!");
                 res.render("transactions/index",{allTransactions: allTransactions});
             }
             });
@@ -107,18 +100,42 @@ router.post("/transactions/:id/accept",middleware.isLoggedIn,function(req,res){
         if(foundtransaction.headinvolved==true ){
             User.findById(foundtransaction.requester).populate("classs").exec(function(err,foundUser){
                 if(foundUser.type=="user"){
-                    //Getting Day of transaction creation
-                    var requestdate=new Date(foundtransaction.time);
-                    var requestday=requestdate.getDay()-1;
-                    if(requestday!=-1){
-                        foundUser.classs.timetable[requestday].lecturers.forEach(function(fac){
-                            Transaction.create({requester: foundtransaction.requester,responder: fac,isNotification: true,reason: foundtransaction.reason},function(err,createdtransaction){
-                                // console.log("Notifications created!");
-                                // console.log(createdtransaction);
-                                res.redirect("/transactions");
-                            });
-                        });
+                    var periodflag=false;
+                    //Figuring out what type of transaction 
+                    if(foundtransaction.data.isoneday!=undefined){
+                        var Dates=[];
+                        Dates.push(foundtransaction.data.startdate);
+                    }else if(foundtransaction.data.isseveraldays!=undefined){
+                        var Dates=[];
+                        var startdate=new Date(foundtransaction.data.startdate);
+                        var enddate =new Date(foundtransaction.data.enddate);
+                        Dates=getDateArray(startdate,enddate);
+                    }else if(foundtransaction.data.isperiods!=undefined){
+                        var Dates=[];
+                        Dates.push(foundtransaction.data.startdate);
+                        periodflag=true;
+                        var startperiod=foundtransaction.data.startperiod;
+                        var endperiod=foundtransaction.data.endperiod;
                     }
+                        Dates.forEach(function(date){
+                                //Getting Day of transaction creation
+                            var requestdate=new Date(date);
+                            var requestday=requestdate.getDay()-1;
+                            if(requestday!=-1){
+                                var cnt=1;
+                                // If only the selected day is not a Sunday!
+                                foundUser.classs.timetable[requestday].lecturers.forEach(function(fac){
+                                    if(periodflag==false|| (periodflag==true && (cnt>=startperiod && cnt<=endperiod))){
+                                        Transaction.create({reftransaction: foundtransaction._id,forperiod: cnt,fordate: date,requester: foundtransaction.requester,responder: fac,isNotification: true,reason: foundtransaction.reason,data: foundtransaction.data},function(err,createdtransaction){
+                                            res.redirect("/transactions");
+                                        });
+                                    }
+                                    cnt++;
+                                });
+                            }
+                        });
+                        
+                    
                 }else{
                     // console.log("Admin-admin transaction");
                     res.redirect("/transactions");
@@ -144,11 +161,26 @@ router.post("/transactions/:id/delete",middleware.isLoggedIn,function(req,res){
         if(err){
             console.log(err);
         }else{
-            // console.log("Deleted=====");
-            // console.log(transaction);
+            Transaction.find({reftransaction: transaction._id},function(err,foundtransactions){
+                foundtransactions.forEach(function(notif){
+                    Transaction.findByIdAndRemove(notif._id,function(err,thenotif){
+                    });
+                })
+            });
             res.redirect("/transactions");
         }
     });
 });
+
+
+var getDateArray = function(start, end) {
+    var arr = new Array(),
+      dt = new Date(start);
+    while (dt <= end) {
+      arr.push(new Date(dt));
+      dt.setDate(dt.getDate() + 1);
+    }
+    return arr;
+  }
 
 module.exports = router;

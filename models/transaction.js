@@ -3,15 +3,20 @@ var mongoose = require("mongoose");
 var transactionSchema = mongoose.Schema({
     reason: String,
     data:{
-        dayofweek: Number,
-        requestdate: Date,
+        startdate: Date,
         isoneday: Boolean,
         isseveraldays: Boolean,
         enddate: Date,
         isperiods: Boolean,
         startperiod: Number,
-        endperiod: Number
+        endperiod: Number    
     },
+    reftransaction: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Transaction"
+    },
+    forperiod: Number,
+    fordate: Date,
     time : { type : Date, default: Date.now },
     acceptance: {type: Boolean, default: false},
     requester: {

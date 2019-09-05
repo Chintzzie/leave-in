@@ -1,12 +1,28 @@
 <% include ../partials/header %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <div class="container">
     <div class="row">
         <h1 style="text-align: center">Create a new request</h1>
-        <div style="width: 30%; margin: 25px auto;">
+        <div style="width: 80%; margin: 25px auto;">
             <form action="/transactions" method="POST">
                 <div class="form-group">
                     <input class="form-control" type="text" name="cause" placeholder="Eg: fever">
                 </div>
+                <fieldset id="reqselect">
+                    <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=1 onclick="showessential(this.value);" >Oneday</label>
+                    <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=2 onclick="showessential(this.value);" checked>Several days</label>
+                    <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=3 onclick="showessential(this.value);" >Several periods</label> 
+                </fieldset>
+                
+                <div class="form-group">
+                StartDate:<input type="date" name="data[startdate]" id="startdate" aria-label="Start Date" ><br>
+                Enddate:<input type="date" name="data[enddate]" id="enddate"><br>
+                Startperiod:<input type="number" name="data[startperiod]" id="startperiod" value=0><br>
+                Endperiod:<input type="number" name="data[endperiod]" id="endperiod" value=0>
+                </div>
+
+
                 <%if(head!=adminid){%>
                     <input type="checkbox" name="redirect" value="true" checked>Redirect to Head<br>
                     <div class="form-group">
@@ -24,5 +40,6 @@
         </div>
     </div>
 </div>
+<script src="/scripts/transactions/new.js" type="text/javascript"></script>
 <% include ../partials/footer %>
 

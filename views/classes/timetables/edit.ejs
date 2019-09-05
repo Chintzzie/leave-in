@@ -3,7 +3,8 @@
     <div class="row">
         <%if(nop==undefined){
             nop=7;
-            }%>
+            }
+            %>
         <h1 style="text-align: center">EDIT/VIEW timetable for <%=classs.name%> of <%=classs.dept%></h1>
         <div style="width: 100%; margin: 25px auto;">
 
@@ -16,7 +17,7 @@
                     <h2><%=day%></h2>
                     <hr>
                     <%for(var i=0; i<classs.timetable[0].lecturers.length ;i++){ %>
-                        For period <%=i%>:<select name="timetable[<%= cnt%>][lecturers][<%=i%>]" >
+                        For period <%=i+1%>:<select name="timetable[<%= cnt%>][lecturers][<%=i%>]" >
                             <% classs.faculty.forEach(function(admin){ %>
                                 <option value="<%= admin._id%>" 
                                     <% if(admin._id.equals(classs.timetable[cnt].lecturers[i])){%>

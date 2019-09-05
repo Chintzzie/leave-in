@@ -1,9 +1,17 @@
 <% include ../partials/header %>
 <div class="container">
     <div class="row">
+            <%if(nos==undefined){
+                nos=classs.faculty.length;
+                }%>
         <h1 style="text-align: center">Edit <%= classs.name%> of <%=dept%></h1>
         <div style="width: 30%; margin: 25px auto;">
-                <!-- No of subjects:<input type="number" id="nos" value=6 > -->
+                
+                <form id="nosform" action="/<%= orgid%>/<%= dept%>/classes/<%= classs._id%>/edit" method="GET">
+                    <div class="form-group">
+                            No of subjects:<input type="number" id="nos" value=<%=nos%> name="nos" onchange="nosubjects()">
+                    </div>
+                </form>
             
             <form action="/<%= orgid%>/<%= dept%>/classes/<%= classs._id%>" method="POST">
                 <div class="form-group">
@@ -20,28 +28,23 @@ For Class Incharge:<select name="head" >
                             </option>
                         <%});%>
                 </select><br>
-                For sub 1:<select name="faculty[0]">
+                <%for(var i=1; i<=nos ;i++){ %>
+                     <%if(i>classs.faculty.length){ %>
+                        <h6>New subject:</h6>
+                     <%}%>
+                    For sub <%=i%>:<select name="faculty[<%=i%>]" >
                         <% admins.forEach(function(admin){ %>
                             <option value="<%= admin._id%>" 
-                                <%if(admin._id.equals(classs.faculty[0])){%>
+                                <%if(admin._id.equals(classs.faculty[i])){%>
                                     selected
                                 <%}%> 
-                            >
+                                >
                                 <%= admin.username%>
                             </option>
                         <%});%>
                 </select><br>
-                For sub 2:<select name="faculty[1]">
-                        <% admins.forEach(function(admin){ %>
-                            <option value="<%= admin._id%>" 
-                                <%if(admin._id.equals(classs.faculty[1])){%>
-                                    selected
-                                <%}%> 
-                            >
-                                <%= admin.username%>
-                            </option>
-                        <%});%>
-                </select>
+                <%}%>
+                
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Submit!</button>
                 </div>
@@ -54,5 +57,6 @@ For Class Incharge:<select name="head" >
         </div>
     </div>
 </div>
+<script src="/scripts/classes/new.js" type="text/javascript"></script>
 <% include ../partials/footer %>
 

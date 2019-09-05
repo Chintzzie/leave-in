@@ -21,7 +21,7 @@
                     <h2><%=day%></h2>
                     <hr>
                     <%for(var i=0; i<nop ;i++){ %>
-                        For period <%=i%>:<select name="timetable[<%= cnt%>][lecturers][<%=i%>]" >
+                        For period <%=i+1%>:<select name="timetable[<%= cnt%>][lecturers][<%=i%>]" >
                             <% classs.faculty.forEach(function(admin){ %>
                                 <option value="<%= admin._id%>" ><%= admin.username%></option>
                             <%});%>
