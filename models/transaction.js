@@ -9,7 +9,14 @@ var transactionSchema = mongoose.Schema({
         enddate: Date,
         isperiods: Boolean,
         startperiod: Number,
-        endperiod: Number    
+        endperiod: Number,
+        isproxytransaction: Boolean,  
+        students:[
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ]
     },
     reftransaction: {
         type: mongoose.Schema.Types.ObjectId,

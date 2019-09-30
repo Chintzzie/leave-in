@@ -3,9 +3,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <div class="container">
     <div class="row">
+            
         <h1 style="text-align: center">Create a new request</h1>
         <div style="width: 80%; margin: 25px auto;">
+            <fieldset id="reqselectfor">
+                <label class="radio-inline"><input class="reqfor" type="radio" name="reqfor" value=4 onclick="showessential(this.value);" <%if(nos==undefined){%> checked <%}%> >Personal</label>
+                <label class="radio-inline"><input class="reqfor" type="radio" name="reqfor" value=5 onclick="showessential(this.value);" <%if(nos!=undefined){%> checked <%}%> >Multiple requesters</label>
+            </fieldset>
+            <%if(nos==undefined){
+                nos=0;
+                }%>
+            <div class="form-group" id="students">
+                <form id="nostudentsform" action="/<%=adminid%>/transaction/<%=head%>/new" method="GET">
+                    <div class="form-group">
+                            No of students:<input type="number" id="nos" value=<%=nos%> name="nos" onchange="nostudents()">
+                    </div>
+                </form>
+            </div>
             <form action="/transactions" method="POST">
+                
                 <div class="form-group">
                     <input class="form-control" type="text" name="cause" placeholder="Eg: fever">
                 </div>
@@ -13,14 +29,24 @@
                     <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=1 onclick="showessential(this.value);" >Oneday</label>
                     <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=2 onclick="showessential(this.value);" checked>Several days</label>
                     <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=3 onclick="showessential(this.value);" >Several periods</label> 
+                    <label class="radio-inline"><input hidden="true" type="number" id="nos" value=<%=nos%> name="nos" onchange="nostudents()"></label>
                 </fieldset>
                 
                 <div class="form-group">
-                StartDate:<input type="date" name="data[startdate]" id="startdate" aria-label="Start Date" ><br>
-                Enddate:<input type="date" name="data[enddate]" id="enddate"><br>
-                Startperiod:<input type="number" name="data[startperiod]" id="startperiod" value=0><br>
-                Endperiod:<input type="number" name="data[endperiod]" id="endperiod" value=0>
+                <label id="startdate">Startdate:<input type="date" name="data[startdate]"  aria-label="Start Date" ></label><br>
+                <label id="enddate">Enddate:<input type="date" name="data[enddate]" ></label><br>
+                <label id="startperiod">Startperiod:<input type="number" name="data[startperiod]"  value=0></label><br>
+                <label id="endperiod">Endperiod:<input type="number" name="data[endperiod]"  value=0></label>
                 </div>
+                <div class="form-group" id="addstudents">
+                    <%if(nos>0){%>
+                        ADD students:<br>
+                        <%for(var i=0; i<nos ;i++){ %>
+                            <input type="text" placeholder="Enter student <%=i+1%>: id " name="students[<%=i%>]"><br>
+                        <%}%>
+                    <%}%>
+                </div>
+                
 
 
                 <%if(head!=adminid){%>
@@ -29,6 +55,7 @@
                         <input class="form-control" type="hidden" name="head" value="<%=head %>">
                     </div>
                     <%}%>
+                
                 <div class="form-group">
                     <input class="form-control" type="hidden" name="adminid" value="<%=adminid %>">
                 </div>

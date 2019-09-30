@@ -16,9 +16,10 @@ var commentRoutes    = require("./routes/comments"),
     orgRoutes        = require("./routes/orgs"),
     userRoutes       = require("./routes/users"),
     transactionRoutes= require("./routes/transactions"),
-    classRoutes= require("./routes/class")
+    classRoutes      = require("./routes/class")
     
 mongoose.connect("mongodb://localhost/leave-in");
+//mongoose.connect("mongodb://dev:456456@cluster0-shard-00-00-vhanl.mongodb.net:27017,cluster0-shard-00-01-vhanl.mongodb.net:27017,cluster0-shard-00-02-vhanl.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));

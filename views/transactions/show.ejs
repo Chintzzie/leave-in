@@ -29,6 +29,9 @@
                         <h3>For period: <%= transaction.forperiod %></h3>
                         <h3>For date: <%= transaction.fordate %></h3>
                     <%}%>
+                    <%if(transaction.data.isproxytransaction!=undefined){%>
+                        <h6>Involved: <%= transaction.data.students %></h6>
+                    <%}%>
                     
                     <h3 id="info"><%if(transaction.acceptance || transaction.isNotification){%>
                         Accepted!

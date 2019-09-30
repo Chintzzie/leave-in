@@ -1,3 +1,6 @@
+function nostudents(){
+    document.getElementById("nostudentsform").submit(); 
+}
 $('#startperiod').fadeOut();
 $('#endperiod').fadeOut();
 $('#enddate').fadeIn();
@@ -18,6 +21,12 @@ function showessential(value){
         $('#endperiod').fadeIn();
         $('#enddate').fadeOut();
         $('startdate').fadeIn();
+    }else if(value==4){
+        $('#students').fadeOut();
+        $('#addstudents').fadeOut();
+    }else if(value==5){
+        $('#students').fadeIn();
+        $('#addstudents').fadeIn();
     }
 
 }

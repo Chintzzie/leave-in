@@ -1,5 +1,6 @@
 <% include ../partials/header %> 
-
+<%var prevtransaction={fordate: Date.now()};%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  <div class="container">
      <header class="jumbotron">
          <div class="container">
@@ -26,9 +27,6 @@
                             <h4><%= transaction.reason %></h4>
                             <h6>from:<%= transaction.requester.username %></h6> 
                             <h6>to:<%= transaction.responder.username %></h6>
-                            <%if(transaction.time!=undefined){%>
-                               <h4><%=transaction.time%></h4>
-                            <%}%>
                             <%if(transaction.acceptance){%>
                                 Accepted!
                             <%}else{%>
@@ -72,13 +70,30 @@
      </div>
      <%if(currentUser.type=="admin"){%>
         <h2>Notifications</h2>
+        <button id="today" class="list-group-item ">Today</button>
+        <button id="alldays" class="list-group-item active">All days</button>
+        <button id="thisperiod" class="list-group-item">This period</button>
+        <button id="allperiods" class="list-group-item">All periods</button>
+        <hr>
+        <input type="date" id="dateselector"><br>
         <div class="row text-center" style="display:flex; flex-wrap: wrap;">    
                 <%if(currentUser.type=="admin"){%>
                 <% if(notifications.length==0){%>
                     <h4>No notifications</h4><br>
                 <% } else { %>
-                    <% notifications.forEach(function(transaction){ %>
-                        <div class="col-md-3 col-sm-6">
+                    <% notifications.forEach(function(transaction){ var timediff=Date.now()-transaction.fordate.getTime();
+                    if(timediff<0){
+                        timediff=timediff*(-1);
+                    } 
+                    if(transaction.fordate.toString()!=prevtransaction.fordate.toString()){ %>
+                        <h5 class="dateheader"><%= transaction.fordate%></h5><br><hr>
+                    <%}%>
+                        <div class="col-md-3 col-sm-6
+                            <%if(!(timediff>=0 && timediff<=86400000)){%>
+                                 nottoday
+                            <%}%>
+                        "
+                        >
                             <div class="thumbnail">
                             <div class="caption">
                                 <%if(transaction.reason!=undefined){%>
@@ -98,7 +113,7 @@
                             </p>
                             </div>
                         </div>
-                    <% }); %>
+                    <% prevtransaction=transaction}); %>
                     <% } %>
             <%}%>
         </div>
@@ -121,8 +136,11 @@
                                 <%}else{%>
                                     <h4>Un named notification</h4>
                                 <%}%>
-                                <h6>from:<%= transaction.requester.username %></h6> 
-                                <h6>to:<%= transaction.responder.username %></h6>
+                                <h6>from:<%= transaction.requester.username %></h6>
+                                <%if(transaction.responder!=undefined && transaction.responder.username!=undefined){%>
+                                    <h6>to:<%= transaction.responder.username %></h6>
+                                <%}%> 
+                                
                                 <%if(transaction.isNotification){%>
                                     <h5>Notif</h5>
                                     <%}%>       
@@ -140,5 +158,5 @@
 
 
 </div>
-
+<script src="/scripts/transactions/index.js" type="text/javascript"></script>
 <% include ../partials/footer %>
