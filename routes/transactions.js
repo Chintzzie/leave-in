@@ -187,6 +187,13 @@ router.post("/transactions/:id/accept",middleware.isLoggedIn,function(req,res){
     });
 });
 
+
+router.post("/transactions/:id/reject",middleware.isLoggedIn,(req,res)=>{
+    Transaction.findByIdAndUpdate(req.params.id,{isrejected: true},(err,updatedTransaction)=>{
+        return res.redirect("/transactions");
+        console.log("Set rejected!");
+    });
+});
 //UPDATE - update interacceptance info of a chained transaction
 router.post("/transactions/:id/forward",middleware.isLoggedIn,function(req,res){
     Transaction.findByIdAndUpdate(req.params.id,{interacceptance: true},function(err,transaction){

@@ -35,6 +35,8 @@
                     
                     <h3 id="info"><%if(transaction.acceptance || transaction.isNotification){%>
                         Accepted!
+                        <%}else if(transaction.isrejected!=undefined && transaction.isrejected){%>
+                            Rejected!
                     <%}else{%>
                         Pending!
                     <%}%></h3>
@@ -56,7 +58,7 @@
                 <%}%>
                 <%if(transaction.isNotification==true){%>
 
-                <%}else if((currentUser._id.equals(transaction.responder._id) ||(transaction.redirection==true && transaction.head.equals(currentUser._id))) && transaction.acceptance==false){%>
+                <%}else if((currentUser._id.equals(transaction.responder._id) ||(transaction.redirection==true && transaction.head.equals(currentUser._id))) && transaction.acceptance==false && transaction.isrejected==false){%>
                 <p>
                     
                     <%if(transaction.redirection==false ){%>
@@ -78,6 +80,11 @@
                             </div>
                         </form>  
                     <%}%>
+                    <form action="/transactions/<%=transaction._id %>/reject" method="POST">
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-danger ">Reject!</button>
+                        </div>
+                    </form>
                 </p>
                 <%}%>
                 <%if(currentUser._id.equals(transaction.requester._id)){%>

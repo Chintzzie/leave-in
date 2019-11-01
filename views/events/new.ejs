@@ -1,0 +1,60 @@
+<% include ../partials/header %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="container">
+    <div class="row">
+            
+        <h1 style="text-align: center">Create a new event</h1>
+        <div style="width: 80%; margin: 25px auto;">
+            <%if(nos==undefined){
+                nos=0;
+                }%>
+            <div class="form-group" id="organizers">
+                <form id="noorganizersform" action="/events/new" method="GET">
+                    <div class="form-group">
+                            No of organizers:<input type="number" id="nos" value=<%=nos%> name="nos" onchange="noorganizers()">
+                    </div>
+                </form>
+            </div>
+            <form action="/events" method="POST">
+                
+                <div class="form-group">
+                    <input class="form-control" type="text" name="name" placeholder="Name of event">
+                </div>
+                <fieldset id="reqselect">
+                    <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=1 onclick="showessential(this.value);" >Oneday</label>
+                    <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=2 onclick="showessential(this.value);" checked>Several days</label>
+                    <label class="radio-inline"><input class="reqtype" type="radio" name="reqtype" value=3 onclick="showessential(this.value);" >Several periods</label> 
+                    <label class="radio-inline"><input hidden="true" type="number" id="nos" value=<%=nos%> name="nos" onchange="noorganizers()"></label>
+                </fieldset>
+                
+                <div class="form-group">
+                <label id="startdate">Startdate:<input type="date" name="data[startdate]"  aria-label="Start Date" ></label><br>
+                <label id="enddate">Enddate:<input type="date" name="data[enddate]" ></label><br>
+                <label id="startperiod">Startperiod:<input type="number" name="data[startperiod]"  value=0></label><br>
+                <label id="endperiod">Endperiod:<input type="number" name="data[endperiod]"  value=0></label>
+            </div>
+                <div class="form-group" id="addorganizers">
+                    <%if(nos>0){%>
+                        ADD Organisers:<br>
+                        <%for(var i=0; i<nos ;i++){ %>
+                            <input type="text" placeholder="Enter Organiser <%=i+1%>: id " name="organizers[<%=i%>]"><br>
+                        <%}%>
+                    <%}%>
+                </div>
+            
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="requester" value="<%=currentUser.id %>">
+                    <input class="form-control" type="hidden" name="org" value="<%=currentUser.org %>">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+                </div>
+            </form>
+            <a href="/events">Go Back</a>
+        </div>
+    </div>
+</div>
+<script src="/scripts/events/new.js" type="text/javascript"></script>
+<% include ../partials/footer %>
+

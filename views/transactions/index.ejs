@@ -10,6 +10,9 @@
                 <%if(currentUser.org!=undefined){%>
                     <a class="btn btn-success btn-large" href="/orgs/<%=currentUser.org%>/<%=currentUser.dept%>">Make Request</a>
                 <%}%>
+                <%if(currentUser.type=="admin" && currentUser.org!=undefined){%>
+                    <a class="btn btn-success btn-large" href="/events/new">Create a new event</a>  
+                <%}%>
             </p>
          </div>
      </header>
@@ -55,6 +58,8 @@
                         
                         <%if(transaction.acceptance){%>
                                 Accepted!
+                            <%}else if(transaction.isrejected!=undefined && transaction.isrejected){%>
+                                Rejected!
                             <%}else{%>
                                 Pending!
                             <%}%>

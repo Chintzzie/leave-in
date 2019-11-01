@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var SceneSchema = new mongoose.Schema({
+var EventSchema = new mongoose.Schema({
     name: String,
     organizers:[
         {
@@ -8,12 +8,16 @@ var SceneSchema = new mongoose.Schema({
             ref:"User"
         }
     ],
+    participants:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        }
+    ],
     org:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:"Org"
+        ref: "Org"
     },
-    throughout_org:{type: Boolean,default: false},
-    dept: String,
     startdate: Date,
     isoneday: Boolean,
     isseveraldays: Boolean,
@@ -23,4 +27,4 @@ var SceneSchema = new mongoose.Schema({
     endperiod: Number
 });
 
-module.exports = mongoose.model("Scene", SceneSchema);
+module.exports = mongoose.model("Event", EventSchema);

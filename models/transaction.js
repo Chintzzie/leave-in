@@ -26,6 +26,7 @@ var transactionSchema = mongoose.Schema({
     fordate: Date,
     time : { type : Date, default: Date.now },
     acceptance: {type: Boolean, default: false},
+    isrejected: {type: Boolean,default: false},
     requester: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
