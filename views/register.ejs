@@ -1,20 +1,27 @@
 <% include ./partials/header %> 
-<h1>Sign Up!</h1>
 
-<form action="/register" method="post">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <select name="type">
-        <option value="admin">
-            ADMIN
-        </option>
-        <option value="user">
-            USER
-        </option>
-        <option value="surveillance">
-            SURVEILLANCE
-        </option>
-    </select>
-    <button>Sign Up</button>
-</form>
+
+<div class="container">
+    <h1>Sign Up!</h1>
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <div class="form-group">
+            <form action="/register" method="post">
+                <input type="text" name="username" placeholder="username">
+                <input type="password" name="password" placeholder="password">
+                <select name="type">
+                    <option value="admin">
+                        ADMIN
+                    </option>
+                    <option value="user">
+                        USER
+                    </option>
+                    <option value="surveillance">
+                        SURVEILLANCE
+                    </option>
+                </select>
+                <button>Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
 <% include ./partials/footer %> 

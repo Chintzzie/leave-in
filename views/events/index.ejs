@@ -1,0 +1,34 @@
+<% include ../partials/header %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="container">
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <%events.forEach(function(event){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4>Name:<%=event.name%></h4><br>
+                        <%if(event.isperiods){%>
+                            <h4>Start Period:<%=event.startperiod%></h4><br>
+                            <h4>End Period:<%=event.endperiod%></h4><br>
+                        <%}else if(event.isseveraldays){%>
+                                <h4>Start Date:<%=event.startdate%></h4><br>
+                                <h4>End Date:<%=event.enddate%></h4><br>
+                        <%}else{%>
+                             <h4>Start Date:<%=event.startdate%></h4><br>
+                         <%}%>
+                    </div>
+                <p>
+                    <form action="/<%=event.id%>/participate" method="POST">
+                        <input hidden="true" name="usertype" value="<%=currentUser.type%>">
+                        <input class="btn btn-success" type="submit" name="participate" value="Participate!">
+                        </form>
+
+                    <a href="/events/<%=event.id%>" class="btn btn-primary">More Info</a>
+                </p>
+                </div>
+            </div>
+        <%})%>
+    </div>
+</div>
+
+<% include ../partials/footer %>

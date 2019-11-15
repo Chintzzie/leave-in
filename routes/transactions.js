@@ -42,7 +42,7 @@ router.post("/transactions",middleware.isLoggedIn,function(req,res){
 
     //Checking if this is a proxy transaction
     if(req.body.nos==0){
-        console.log("Not for students");
+        
         completetransaction();
     }else{
         data.students=new Array();
@@ -120,7 +120,10 @@ router.get("/transactions/:id/show",middleware.isLoggedIn,function(req,res){
         if(err){
             console.log(err);
         }else{
-            res.render("transactions/show",{transaction: transaction});
+            Transaction.find({requester: transaction.requester.id},(err,concernedTransactions)=>{
+                res.render("transactions/show",{transaction: transaction,prevTransactions: concernedTransactions});
+            });
+            
         }
     });
 });

@@ -19,10 +19,10 @@ var EventSchema = new mongoose.Schema({
         ref: "Org"
     },
     startdate: Date,
-    isoneday: Boolean,
-    isseveraldays: Boolean,
+    isoneday: {type: Boolean,default: false},
+    isseveraldays: {type: Boolean,default: false},
     enddate: Date,
-    isperiods: Boolean,
+    isperiods: {type: Boolean,default: false},
     startperiod: Number,
     endperiod: Number
 });

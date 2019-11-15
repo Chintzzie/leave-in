@@ -9,10 +9,14 @@
                 <li class="list-group-item">History</li>
             </div>
         </div>
-        <div class="col-md-9">
+        <div id="landing" class="col-md-9">
             <div  class="thumbnail">
                 <div  class="caption">
-                    <h4><%= transaction.reason %></h4>
+                    <h3>Attendance--</h3>
+                    Attendace=69%
+                    <hr>
+                    <h3>Request Details--</h3>
+                    <h4>Reason:<%= transaction.reason %></h4>
                     <h6>from:<%= transaction.requester.username %></h6> 
                     <h6>to:<%= transaction.responder.username %></h6>
                     <%if(transaction.data.isoneday!=undefined){%>
@@ -96,8 +100,32 @@
                         </form>
                     </p>
                 <%}%>
+                    <hr>
+                    <h3>History--</h3>
+                <div id="history">
+                    <table>
+                    <%prevTransactions.forEach(function(transaction){%>
+                    <%if(!transaction.isNotification){%>
+                        <tr>
+                            <td><%=transaction.reason%></td>
+                            <td><%=transaction.time%></td>
+                            <%if(transaction.isrejected){%>
+                                <td>Rejected</td>
+                            <%}else if(transaction.acceptance){%>
+                                <td>Accepted</td>
+                            <%}else{%>
+                                <td>Pending!</td>
+                            <%}%>
+                        </tr>
+                    <%}%>
+                    <%})%>
+                </table>
+                </div>
              </div>
         </div>
+
+
+        
     </div>
 </div>
 
