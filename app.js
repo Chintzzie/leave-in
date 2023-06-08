@@ -17,9 +17,17 @@ var
     transactionRoutes= require("./routes/transactions"),
     classRoutes      = require("./routes/class"),
     eventRoutes      = require("./routes/events")
-    
-mongoose.connect("mongodb://localhost/leave-in");
-//mongoose.connect("mongodb://dev:456456@cluster0-shard-00-00-vhanl.mongodb.net:27017,cluster0-shard-00-01-vhanl.mongodb.net:27017,cluster0-shard-00-02-vhanl.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority",{useMongoClient: true});
+
+const mongooseConnectionURI = "mongodb+srv://lucifer:YuVmEwsoDuu0hkzl@cluster1.gf41ojj.mongodb.net/test?ssl=true&authSource=admin&retryWrites=true&w=majority";
+
+mongoose.connect(mongooseConnectionURI, { dbName: "testDB" })
+  .then( () => {
+    console.log('Connection to the Atlas Cluster is successful!')
+  })
+  .catch( (err) => {
+      console.log(" Error while connecting to MongoDB")
+      console.log("error: ",err)
+  });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
