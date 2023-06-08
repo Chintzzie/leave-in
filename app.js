@@ -62,6 +62,6 @@ app.use("/", classRoutes);
 app.use("/",eventRoutes);
 
 
-app.listen(3000, function(){
+app.listen(3001, function(){
    console.log("The Leave-In Server Has Started!");
 });
